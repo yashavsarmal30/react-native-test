@@ -1,29 +1,29 @@
+# Real Scout - UI Prototype
 
-**Set Up Environment Variables**
+This is a UI-only prototype of the Real Scout application. It uses static data and does not require a backend.
 
-Create a new file named `.env.local` in the root of your project and add the following content:
+## Getting Started
 
-```env
-EXPO_PUBLIC_APPWRITE_ENDPOINT=https://cloud.appwrite.io/v1
-EXPO_PUBLIC_APPWRITE_PROJECT_ID=
-EXPO_PUBLIC_APPWRITE_DATABASE_ID=
-EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID=
-EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID=
-EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID=
-EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID=
-```
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Replace the values with your actual Appwrite credentials. You can obtain these credentials by signing up & creating a new project on the [Appwrite website](https://apwr.dev/JSM050).
+2. **Start the app**
+   ```bash
+   npx expo start
+   ```
 
-**Start the app**
-   
-```bash
- npx expo start
-```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+In the output, you'll find options to open the app in a:
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- [Expo Go](https://expo.dev/go)
+
+## Project Structure
+
+- `app/`: Contains the application routes (Expo Router).
+- `components/`: Reusable UI components.
+- `constants/`: Static data and theme constants.
+- `lib/`: Utility functions and mock API.
+
+No environment variables are required for this version of the app.

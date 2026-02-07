@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 
-import { login } from "@/lib/appwrite";
+import { login } from "@/lib/api";
 import { Redirect } from "expo-router";
 import { useGlobalContext } from "@/lib/global-provider";
 import icons from "@/constants/icons";

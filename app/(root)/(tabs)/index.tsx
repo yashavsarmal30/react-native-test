@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Button,
   FlatList,
   Image,
   Text,
@@ -11,8 +10,6 @@ import { useEffect, useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-
-
 import icons from "@/constants/icons";
 
 import Search from "@/components/Search";
@@ -20,17 +17,18 @@ import Filters from "@/components/Filters";
 import NoResults from "@/components/NoResults";
 import { Card, FeaturedCard } from "@/components/Cards";
 
-import { useAppwrite } from "@/lib/useAppwrite";
+import { useFetch } from "@/lib/useFetch";
 import { useGlobalContext } from "@/lib/global-provider";
-import { getLatestProperties, getProperties } from "@/lib/appwrite";
-const Home = () => {
+import { getLatestProperties, getProperties } from "@/lib/api";
+
+export default function Home() {
   const { user } = useGlobalContext();
   const [greeting, setGreeting] = useState("Hello");
   const [emoji, setEmoji] = useState("😊");
   const params = useLocalSearchParams<{ query?: string; filter?: string }>();
 
   const { data: latestProperties, loading: latestPropertiesLoading } =
-    useAppwrite({
+    useFetch({
       fn: getLatestProperties,
     });
 
@@ -38,7 +36,7 @@ const Home = () => {
     data: properties,
     refetch,
     loading,
-  } = useAppwrite({
+  } = useFetch({
     fn: getProperties,
     params: {
       filter: params.filter!,
@@ -47,7 +45,7 @@ const Home = () => {
     },
     skip: true,
   });
-  
+
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour >= 0 && hour < 5) {
@@ -66,14 +64,14 @@ const Home = () => {
       setGreeting("Late Night Hustle?");
     }
 
-      // Emoji list
-  const emojiList = [
-    "🌟", "🌞", "🌜", "☕", "🍂", "✨", "🎉", "🍕", 
-    "📚", "🔥", "🌈", "💡", "😎", "🌻", "🧘‍♂️", 
-    "🎶", "🌙", "🚀", "🍩", "💻", "🌵", "🕊️", "🐾"
-  ];
-  setEmoji(emojiList[hour % emojiList.length]); // Rotate emojis every hour
-}, []);
+    // Emoji list
+    const emojiList = [
+      "🌟", "🌞", "🌜", "☕", "🍂", "✨", "🎉", "🍕",
+      "📚", "🔥", "🌈", "💡", "😎", "🌻", "🧘‍♂️",
+      "🎶", "🌙", "🚀", "🍩", "💻", "🌵", "🕊️", "🐾"
+    ];
+    setEmoji(emojiList[hour % emojiList.length]); // Rotate emojis every hour
+  }, []);
 
   useEffect(() => {
     refetch({
@@ -90,10 +88,10 @@ const Home = () => {
       <FlatList
         data={properties}
         numColumns={2}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: any }) => (
           <Card item={item} onPress={() => handleCardPress(item.$id)} />
         )}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item: any) => item.$id}
         contentContainerClassName="pb-32"
         columnWrapperClassName="flex gap-5 px-5"
         showsVerticalScrollIndicator={false}
@@ -109,7 +107,7 @@ const Home = () => {
             <View className="flex flex-row items-center justify-between mt-5">
               <View className="flex flex-row">
                 <TouchableOpacity
-                  onPress={() => router.push("/(root)/(tabs)/profile")} //redirection for app
+                  onPress={() => router.push("/(root)/(tabs)/profile")}
                 >
                   <Image
                     source={{ uri: user?.avatar }}
@@ -119,7 +117,6 @@ const Home = () => {
 
                 <View className="flex flex-col items-start ml-2 justify-center">
                   <Text className="text-xs font-rubik text-black-100">
-                    {/* dynamic greetting according to time */}
                     {greeting} {emoji}
                   </Text>
                   <Text className="text-base font-rubik-medium text-black-300">
@@ -151,21 +148,19 @@ const Home = () => {
               ) : (
                 <FlatList
                   data={latestProperties}
-                  renderItem={({ item }) => (
+                  renderItem={({ item }: { item: any }) => (
                     <FeaturedCard
                       item={item}
                       onPress={() => handleCardPress(item.$id)}
                     />
                   )}
-                  keyExtractor={(item) => item.$id}
+                  keyExtractor={(item: any) => item.$id}
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   contentContainerClassName="flex gap-5 mt-5"
                 />
               )}
             </View>
-
-            {/* <Button title="seed" onPress={seed} /> */}
 
             <View className="mt-5">
               <View className="flex flex-row items-center justify-between">
@@ -186,6 +181,4 @@ const Home = () => {
       />
     </SafeAreaView>
   );
-};
-
-export default Home;
+}

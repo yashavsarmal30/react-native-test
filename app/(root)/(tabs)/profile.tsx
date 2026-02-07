@@ -2,14 +2,14 @@ import {
   Alert,
   Image,
   ImageSourcePropType,
-  SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { logout } from "@/lib/appwrite";
+import { logout } from "@/lib/api";
 import { useGlobalContext } from "@/lib/global-provider";
 
 import icons from "@/constants/icons";
@@ -46,7 +46,7 @@ const SettingsItem = ({
   </TouchableOpacity>
 );
 
-const Profile = () => {
+export default function Profile() {
   const { user, refetch } = useGlobalContext();
 
   const handleLogout = async () => {
@@ -73,7 +73,6 @@ const Profile = () => {
         <View className="flex flex-row justify-center mt-5">
           <View className="flex flex-col items-center relative mt-5">
             <Image
-              // source={images.avatar}
               source={{ uri: user?.avatar }}
               className="size-44 relative rounded-full"
             />
@@ -108,6 +107,4 @@ const Profile = () => {
       </ScrollView>
     </SafeAreaView>
   );
-};
-
-export default Profile;
+}

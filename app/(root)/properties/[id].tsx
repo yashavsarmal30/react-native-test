@@ -15,15 +15,15 @@ import images from "@/constants/images";
 import Comment from "@/components/Comment";
 import { facilities } from "@/constants/data";
 
-import { useAppwrite } from "@/lib/useAppwrite";
-import { getPropertyById } from "@/lib/appwrite";
+import { useFetch } from "@/lib/useFetch";
+import { getPropertyById } from "@/lib/api";
 
 const Property = () => {
   const { id } = useLocalSearchParams<{ id?: string }>();
 
   const windowHeight = Dimensions.get("window").height;
 
-  const { data: property } = useAppwrite({
+  const { data: property } = useFetch({
     fn: getPropertyById,
     params: {
       id: id!,
@@ -104,7 +104,7 @@ const Property = () => {
               <Image source={icons.bath} className="size-4" />
             </View>
             <Text className="text-black-300 text-sm font-rubik-medium ml-2">
-              {property?.bathrooms_num} Baths
+              {property?.bathrooms} Baths
             </Text>
             <View className="flex flex-row items-center justify-center bg-primary-100 rounded-full size-10 ml-7">
               <Image source={icons.area} className="size-4" />
@@ -157,7 +157,7 @@ const Property = () => {
               Facilities
             </Text>
 
-            {property?.facilities.length > 0 && (
+            {property?.facilities && property.facilities.length > 0 && (
               <View className="flex flex-row flex-wrap items-start justify-start mt-2 gap-5">
                 {property?.facilities.map((item: string, index: number) => {
                   const facility = facilities.find(
@@ -190,7 +190,7 @@ const Property = () => {
             )}
           </View>
 
-          {property?.gallery.length > 0 && (
+          {property?.gallery && property.gallery.length > 0 && (
             <View className="mt-7">
               <Text className="text-black-300 text-xl font-rubik-bold">
                 Gallery
@@ -198,16 +198,16 @@ const Property = () => {
               <FlatList
                 contentContainerStyle={{ paddingRight: 20 }}
                 data={property?.gallery}
-                keyExtractor={(item) => item.$id}
+                keyExtractor={(item: { $id: string }) => item.$id}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                renderItem={({ item }) => (
+                renderItem={({ item }: { item: { $id: string; image: string } }) => (
                   <Image
                     source={{ uri: item.image }}
                     className="size-40 rounded-xl"
                   />
                 )}
-                contentContainerClassName="flex gap-4 mt-3"
+                className="mt-3"
               />
             </View>
           )}
@@ -229,7 +229,7 @@ const Property = () => {
             />
           </View>
 
-          {property?.reviews.length > 0 && (
+          {property?.reviews && property.reviews.length > 0 && (
             <View className="mt-7">
               <View className="flex flex-row items-center justify-between">
                 <View className="flex flex-row items-center">
@@ -247,7 +247,7 @@ const Property = () => {
               </View>
 
               <View className="mt-5">
-                <Comment item={property?.reviews[0]} />
+                <Comment item={property!.reviews[0]} />
               </View>
             </View>
           )}

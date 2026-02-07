@@ -2,13 +2,13 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  SafeAreaView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useEffect } from "react";
 import { router, useLocalSearchParams } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import icons from "@/constants/icons";
 import Search from "@/components/Search";
@@ -16,17 +16,17 @@ import { Card } from "@/components/Cards";
 import Filters from "@/components/Filters";
 import NoResults from "@/components/NoResults";
 
-import { getProperties } from "@/lib/appwrite";
-import { useAppwrite } from "@/lib/useAppwrite";
+import { getProperties } from "@/lib/api";
+import { useFetch } from "@/lib/useFetch";
 
-const Explore = () => {
+export default function Explore() {
   const params = useLocalSearchParams<{ query?: string; filter?: string }>();
 
   const {
     data: properties,
     refetch,
     loading,
-  } = useAppwrite({
+  } = useFetch({
     fn: getProperties,
     params: {
       filter: params.filter!,
@@ -49,10 +49,10 @@ const Explore = () => {
       <FlatList
         data={properties}
         numColumns={2}
-        renderItem={({ item }) => (
+        renderItem={({ item }: { item: any }) => (
           <Card item={item} onPress={() => handleCardPress(item.$id)} />
         )}
-        keyExtractor={(item) => item.$id}
+        keyExtractor={(item: any) => item.$id}
         contentContainerClassName="pb-32"
         columnWrapperClassName="flex gap-5 px-5"
         showsVerticalScrollIndicator={false}
@@ -93,6 +93,4 @@ const Explore = () => {
       />
     </SafeAreaView>
   );
-};
-
-export default Explore;
+}
