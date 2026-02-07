@@ -4,6 +4,8 @@
     "strict": true,
     "jsx": "react-native",
     "moduleResolution": "bundler",
+    "module": "ESNext",
+    "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
       "@/*": [

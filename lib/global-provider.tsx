@@ -21,7 +21,7 @@ interface GlobalProviderProps {
   children: ReactNode;
 }
 
-export const GlobalProvider = ({ children }: GlobalProviderProps) => {
+export const GlobalProvider = ({ children }: GlobalProviderProps): JSX.Element => {
   const user = users[0];
   const loading = false;
   const isLogged = true;
